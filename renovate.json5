@@ -9,9 +9,6 @@
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
   automerge: false,
-  enabledManagers: [
-    'custom.regex',
-  ],
 
   // Regex-basierte Manager für Selfoss
   "regexManagers": [
