@@ -27,7 +27,7 @@
     "selfoss": {
       "defaultRegistryUrlTemplate": "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=1",
       "transformTemplates": [
-        '{ releases: [ { version: "{{{body.results.[0].version}}}" } ] }'
+        '{ "releases": [ { "version": "{{{json.results.[0].version}}}" } ] }'
       ]
     }
   },
