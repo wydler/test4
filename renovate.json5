@@ -13,31 +13,31 @@
   // Regex-basierte Manager für Selfoss
   "regexManagers": [
     {
+      // Nur die Snapshot-Datei für Selfoss
       "fileMatch": ["^selfoss\\.snapshot$"],
+
+      // Regex, um die aktuelle Version aus der Datei zu holen
       "matchStrings": [
-        // Extrahiere die aktuelle VERSION
         "VERSION=(?<currentValue>\\S+)"
       ],
-      // Nutze einen Custom Datasource, weil Cloudsmith nicht standardmäßig unterstützt wird
+
+      // Custom Datasource für Cloudsmith
       "datasourceTemplate": "custom",
       "depNameTemplate": "selfoss",
       "versioningTemplate": "semver",
-      "registryUrls": [
-        "https://api.cloudsmith.io/v1/packages/fossar/selfoss-git/"
-      ],
-      // Template, um aus der JSON-Antwort die Version zu extrahieren
+
+      // Cloudsmith API URL für das Selfoss-Paket
+      "urlTemplate": "https://api.cloudsmith.io/v1/packages/fossar/selfoss-git/lggOWzAwE6Dq/",
+
+      // Template, um die Version aus der API-Antwort zu ziehen
       "extractVersionTemplate": "{{{json.version}}}"
     }
   ],
 
-  // Update-Regeln für Dockerfile und GitHub Actions
+  // Alles andere deaktivieren, nur selfoss-Updates
   "packageRules": [
     {
-      "managers": ["dockerfile"],
-      "enabled": true
-    },
-    {
-      "managers": ["github-actions"],
+      "matchPackageNames": ["selfoss"],
       "enabled": true
     }
   ]
