@@ -1,6 +1,17 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["config:recommended"],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    'helpers:pinGitHubActionDigests',
+  ],
+  commitMessagePrefix: 'chore(deps):',
+  timezone: 'Europe/Berlin',
+  prHourlyLimit: 0,
+  prConcurrentLimit: 0,
+  automerge: false,
+  enabledManagers: [
+    'custom.regex',
+  ],
 
   customManagers: [
     {
