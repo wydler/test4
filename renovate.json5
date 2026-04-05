@@ -1,0 +1,45 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  extends: ["config:base"],
+
+  enabledManagers: ["custom.regex"],
+
+  customManagers: [
+    {
+      customType: "regex",
+      fileMatch: ["^selfoss\\.snapshot$"],
+      matchStrings: [
+        "VERSION=(?<currentValue>.*)"
+      ],
+      depNameTemplate: "selfoss",
+      datasourceTemplate: "custom.selfoss",
+      versioningTemplate: "loose"
+    }
+  ],
+
+  customDatasources: {
+    selfoss: {
+      defaultRegistryUrlTemplate: "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=1",
+      transformTemplates: [
+        // Falls API direkt ein Array zurückgibt:
+        "{\"releases\":[{\"version\":\"{{{json.[0].version}}}\"}]}"
+        
+        // Falls du später merkst, dass es "results" ist:
+        // "{\"releases\":[{\"version\":\"{{{json.results.[0].version}}}\"}]}"
+      ]
+    }
+  },
+
+  packageRules: [
+    {
+      matchPackageNames: ["selfoss"],
+      commitMessageTopic: "selfoss",
+      commitMessageExtra: "to {{newVersion}}",
+      branchName: "renovate/selfoss",
+      prBodyNotes: [
+        "Quelle: Cloudsmith API"
+      ]
+    }
+  ]
+}
