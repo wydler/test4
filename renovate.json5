@@ -36,7 +36,9 @@
       matchPackageNames: ["selfoss"],
       commitMessageTopic: "selfoss",
       commitMessageExtra: "to {{newVersion}}",
-      branchName: "renovate/selfoss",
+      draftPR: true,
+      additionalBranchPrefix: 'plugin/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       prBodyNotes: [
         "Quelle: Cloudsmith API"
       ]
