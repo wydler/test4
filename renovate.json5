@@ -30,7 +30,8 @@
         '{ releases: [ { version: "{{{body.results.[0].version}}}" } ] }'
       ]
     }
-  }
+  },
+
   "packageRules": [
     {
       "matchPackageNames": ["selfoss"],
