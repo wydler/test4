@@ -13,34 +13,23 @@
     'custom.regex',
   ],
 
-  "customManagers": [
+  // Regex-basierte Manager für Selfoss
+  "regexManagers": [
     {
-      "customType": "regex",
-      "managerFilePatterns": ["/^selfoss\\.snapshot$/"],
-      "matchStrings": ["VERSION=(?<currentValue>.*)"],
-      "depNameTemplate": "selfoss",
-      "datasourceTemplate": "custom.selfoss",
-      "versioningTemplate": "loose"
-    }
-  ],
-  "customDatasources": {
-    "selfoss": {
-      "defaultRegistryUrlTemplate": "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=1",
-      "transformTemplates": [
-        '{ "releases": [ { "version": "{{{body.version}}}" } ] }'
-      ]
-    }
-  },
+      // Datei, in der die Version gespeichert ist
+      "fileMatch": ["selfoss.snapshot"],
 
-  "packageRules": [
-    {
-      "matchPackageNames": ["selfoss"],
-      "commitMessageTopic": "selfoss",
-      "commitMessageExtra": "to {{newVersion}}",
-      "draftPR": false,
-      "additionalBranchPrefix": "plugin/",
-      "branchTopic": "{{depNameSanitized}}-{{newVersion}}",
-      "prBodyNotes": ["Quelle: Cloudsmith API"]
+      // Regex zum Extrahieren der aktuellen Version
+      "matchStrings": ["version\": \"(?<currentValue>.*?)\""],
+
+      // Datasource: Cloudsmith API für Selfoss-Paket
+      "datasourceTemplate": "https://api.cloudsmith.io/v1/packages/fossar/selfoss-git/lggOWzAwE6Dq/",
+
+      // Extrahiert die Version direkt aus der JSON-Antwort
+      "extractVersionTemplate": "{{{body.version}}}",
+
+      // Name der Abhängigkeit
+      "depNameTemplate": "selfoss"
     }
   ]
 }
