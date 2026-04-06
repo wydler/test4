@@ -71,10 +71,19 @@ jobs:
           echo "Neue Datei:"
           cat selfoss.snapshot
 
+      - name: Generate app token
+        if: steps.check.outputs.update == 'true'
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        id: generate-token
+        with:
+          app-id: ${{ secrets.GH_APP_RDP_ID }}
+          private-key: ${{ secrets.GH_APP_RDP_PRIVATE_KEY }}
+          
       - name: Pull Request erstellen
         if: steps.check.outputs.update == 'true'
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
         with:
+          token: ${{ steps.generate-token.outputs.token }}
           # Commit- und PR-Title mit Versionsinformationen
           commit-message: "Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
           title: "chore(deps): Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
