@@ -20,12 +20,18 @@ jobs:
       - name: Pruefe neue Version bei Cloudsmith
         id: check
         run: |
+          #
+          set -euo pipefail
+
+          #
+          TMP_FILE=versions.json
+          
           # Aktuelle Version aus selfoss.snapshot auslesen
           CURRENT_VERSION=$(grep '^VERSION=' selfoss.snapshot | cut -d '=' -f2)
           echo "Aktuelle Version: $CURRENT_VERSION"
 
           # Cloudsmith API aufrufen, sortiert nach Datum absteigend
-          curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=20&sort=-date" > versions.json
+          curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=20&sort=-date" > $TMP_FILE
 
           # Nächsthöhere Version finden, die größer als die aktuelle ist
           NEXT_VERSION=$(jq -r --arg current "$CURRENT_VERSION" '
@@ -33,7 +39,7 @@ jobs:
             | map(.version)                         # nur Versionsstrings
             | (index($current)) as $i               # Position der aktuellen Version
             | if $i == 0 or $i == null then "" else .[$i-1] end
-          ' versions.json)
+          ' $TMP_FILE)
 
           # Prüfen, ob eine neue Version gefunden wurde
           if [ -z "$NEXT_VERSION" ]; then
@@ -43,7 +49,7 @@ jobs:
             echo "Neue Version: $NEXT_VERSION"
   
             # SHA256 Hash zur gefundenen Version aus dem JSON extrahieren
-            NEXT_SHA=$(jq -r --arg v "$NEXT_VERSION" '.[] | select(.version == $v) | .checksum_sha256' versions.json)
+            NEXT_SHA=$(jq -r --arg v "$NEXT_VERSION" '.[] | select(.version == $v) | .checksum_sha256' $TMP_FILE)
             echo "SHA256: $NEXT_SHA"
   
             # Workflow-Ausgaben setzen, damit spätere Schritte darauf zugreifen können
@@ -54,7 +60,7 @@ jobs:
           fi
 
           # Temporäre Datei löschen
-          rm versions.json
+          rm -f $TMP_FILE
 
       - name: Aktualisiere selfoss.snapshot
         if: steps.check.outputs.update == 'true'
