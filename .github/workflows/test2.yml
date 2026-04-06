@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
-      - name: Prüfe neue Version
+      - name: Pruefe neue Version
         id: check
         run: |
           CURRENT_VERSION=$(grep '^VERSION=' selfoss.snapshot | cut -d '=' -f2)
@@ -34,24 +34,22 @@ jobs:
           if [ -z "$NEXT_VERSION" ]; then
             echo "Keine neue Version gefunden"
             echo "update=false" >> $GITHUB_OUTPUT
-            rm versions.json
-            exit 0
+          else
+            echo "Neue Version: $NEXT_VERSION"
+  
+            # Finde passenden SHA256 zur Version
+            NEXT_SHA=$(jq -r --arg v "$NEXT_VERSION" '.[] | select(.version == $v) | .checksum_sha256' versions.json)
+            echo "SHA256: $NEXT_SHA"
+  
+            echo "update=true" >> $GITHUB_OUTPUT
+            echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+            echo "cversion=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "sha=$NEXT_SHA" >> $GITHUB_OUTPUT
           fi
-
-          echo "Neue Version: $NEXT_VERSION"
-
-          # Finde passenden SHA256 zur Version
-          NEXT_SHA=$(jq -r --arg v "$NEXT_VERSION" '.[] | select(.version == $v) | .checksum_sha256' versions.json)
-          echo "SHA256: $NEXT_SHA"
 
           #
           rm versions.json
-
-          echo "update=true" >> $GITHUB_OUTPUT
-          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
-          echo "cversion=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "sha=$NEXT_SHA" >> $GITHUB_OUTPUT
-
+          
       - name: Datei aktualisieren
         if: steps.check.outputs.update == 'true'
         run: |
