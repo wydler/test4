@@ -44,6 +44,7 @@ jobs:
 
           echo "update=true" >> $GITHUB_OUTPUT
           echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "cversion=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "sha=$NEXT_SHA" >> $GITHUB_OUTPUT
 
       - name: Datei aktualisieren
@@ -62,12 +63,12 @@ jobs:
         if: steps.check.outputs.update == 'true'
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
         with:
-          commit-message: "Update selfoss to ${{ steps.check.outputs.version }}"
+          commit-message: "Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
           title: "Update selfoss to ${{ steps.check.outputs.version }}"
           body: |
             Automatisches Update:
             - Version: ${{ steps.check.outputs.version }}
             - SHA256: ${{ steps.check.outputs.sha }}
 
-          branch: update-selfoss-${{ steps.check.outputs.version }}
+          branch: renovate/apps/selfoss-${{ steps.check.outputs.version }}
           # delete-branch: true
