@@ -19,17 +19,18 @@ jobs:
       - name: Pruefe neue Version
         id: check
         run: |
+          # 
           CURRENT_VERSION=$(grep '^VERSION=' selfoss.snapshot | cut -d '=' -f2)
           echo "Aktuelle Version: $CURRENT_VERSION"
 
-          curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page_size=100" > versions.json
+          # 
+          curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=20&sort=-date" > versions.json
 
           # Finde nächste neuere Version
           NEXT_VERSION=$(jq -r '.[].version' versions.json \
             | awk -v current="$CURRENT_VERSION" '$0 > current {print; exit}')
 
           # 
-          
           if [ -z "$NEXT_VERSION" ]; then
             echo "Keine neue Version gefunden"
             echo "update=false" >> $GITHUB_OUTPUT
