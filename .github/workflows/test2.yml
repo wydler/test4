@@ -64,7 +64,7 @@ jobs:
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
         with:
           commit-message: "Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
-          title: "Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
+          title: "chore(deps): Update selfoss from ${{ steps.check.outputs.cversion }} to ${{ steps.check.outputs.version }}"
           body: |
             This PR contains the following updates:
             | Package | Type | Update | Change |
@@ -82,7 +82,7 @@ jobs:
             - Automerge
               - At any time (no schedule defined)
 
-             **Automerge**: Disabled by config. Please merge this manually once you are satisfied.
+            🚦**Automerge**: Disabled by config. Please merge this manually once you are satisfied.
 
             🔕 **Ignore**: Close this PR and you won't be reminded about these updates again.
 
