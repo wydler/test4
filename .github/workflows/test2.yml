@@ -28,7 +28,7 @@ jobs:
           curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page=1&page_size=20&sort=-date" > versions.json
 
           # Nächsthöhere Version finden, die größer als die aktuelle ist
-          NEXT_VERSION=(jq -r --arg current "$CURRENT_VERSION" '
+          NEXT_VERSION=$(jq -r --arg current "$CURRENT_VERSION" '
             . as $all
             | map(.version)                         # nur Versionsstrings
             | (index($current)) as $i               # Position der aktuellen Version
