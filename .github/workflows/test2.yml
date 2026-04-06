@@ -1,0 +1,71 @@
+name: Update selfoss snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: jq installieren
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Prüfe neue Version
+        id: check
+        run: |
+          CURRENT_VERSION=$(grep '^VERSION=' selfoss.snapshot | cut -d '=' -f2)
+          echo "Aktuelle Version: $CURRENT_VERSION"
+
+          curl -s "https://api.cloudsmith.io/packages/fossar/selfoss-git/?page_size=100" > versions.json
+
+          # Finde nächste neuere Version
+          NEXT_VERSION=$(jq -r '.[].version' versions.json \
+            | sort -V \
+            | awk -v current="$CURRENT_VERSION" '$0 > current {print; exit}')
+
+          if [ -z "$NEXT_VERSION" ]; then
+            echo "Keine neue Version gefunden"
+            echo "update=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Neue Version: $NEXT_VERSION"
+
+          # Finde passenden SHA256 zur Version
+          NEXT_SHA=$(jq -r --arg v "$NEXT_VERSION" '.[] | select(.version == $v) | .checksum_sha256' versions.json)
+
+          echo "SHA256: $NEXT_SHA"
+
+          echo "update=true" >> $GITHUB_OUTPUT
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "sha=$NEXT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Datei aktualisieren
+        if: steps.check.outputs.update == 'true'
+        run: |
+          VERSION=${{ steps.check.outputs.version }}
+          SHA=${{ steps.check.outputs.sha }}
+
+          sed -i "s/^VERSION=.*/VERSION=$VERSION/" selfoss.snapshot
+          sed -i "s/^SHA256_HASH=.*/SHA256_HASH=$SHA/" selfoss.snapshot
+
+          echo "Neue Datei:"
+          cat selfoss.snapshot
+
+      - name: Pull Request erstellen
+        if: steps.check.outputs.update == 'true'
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
+        with:
+          commit-message: "Update selfoss to ${{ steps.check.outputs.version }}"
+          title: "Update selfoss to ${{ steps.check.outputs.version }}"
+          body: |
+            Automatisches Update:
+            - Version: ${{ steps.check.outputs.version }}
+            - SHA256: ${{ steps.check.outputs.sha }}
+
+          branch: update-selfoss-${{ steps.check.outputs.version }}
+          # delete-branch: true
