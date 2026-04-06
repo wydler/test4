@@ -10,7 +10,7 @@ permissions:
 jobs:
   selfoss-update:
     runs-on: ubuntu-latest
-    name: Selfoss Snapshot Update
+    name: Snapshot Update
 
     steps:
       # Holt den aktuellen Code aus dem Repository
