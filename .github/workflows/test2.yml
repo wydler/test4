@@ -32,6 +32,7 @@ jobs:
           if [ -z "$NEXT_VERSION" ]; then
             echo "Keine neue Version gefunden"
             echo "update=false" >> $GITHUB_OUTPUT
+            rm versions.json
             exit 0
           fi
 
