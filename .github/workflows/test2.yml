@@ -82,7 +82,7 @@ jobs:
           body: |
             This PR contains the following updates:
             | Package | Type | Update | Change | SHA256 |
-            |---|---|---|---|
+            |---|---|---|---|---|
             | selfoss | snapshot | minor | `${{ steps.check.outputs.cversion }}` → `${{ steps.check.outputs.version }}` | `${{ steps.check.outputs.sha }}` |
 
             ---
