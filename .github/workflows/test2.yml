@@ -1,4 +1,4 @@
-name: Update selfoss snapshot
+name: Update selfoss
 
 on:
   workflow_dispatch: # Workflow manuell auslösbar
@@ -8,15 +8,16 @@ permissions:
   pull-requests: write   # Erlaubt Erstellen von Pull Requests
 
 jobs:
-  update:
+  selfoss-update:
     runs-on: ubuntu-latest
+    name: Selfoss Snapshot Update
 
     steps:
       # Holt den aktuellen Code aus dem Repository
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         
-      - name: Pruefe neue Version
+      - name: Pruefe neue Version bei Cloudsmith
         id: check
         run: |
           # Aktuelle Version aus selfoss.snapshot auslesen
@@ -51,7 +52,7 @@ jobs:
           # Temporäre Datei löschen
           rm versions.json
 
-      - name: Datei aktualisieren
+      - name: Aktualisiere selfoss.snapshot
         if: steps.check.outputs.update == 'true'
         run: |
           # Variablen aus Workflow-Ausgaben
