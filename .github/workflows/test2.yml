@@ -86,6 +86,7 @@ jobs:
             | selfoss | snapshot | minor | `${{ steps.check.outputs.cversion }}` → `${{ steps.check.outputs.version }}` |
 
             SHA256: ${{ steps.check.outputs.sha }}
+            
             ---
 
             ### Configuration
