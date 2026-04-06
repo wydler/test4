@@ -127,4 +127,3 @@ jobs:
           labels: |
             dependencies
             apps
-          reviewers: "dwydler"
