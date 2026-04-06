@@ -26,7 +26,6 @@ jobs:
 
           # Finde nächste neuere Version
           NEXT_VERSION=$(jq -r '.[].version' versions.json \
-            | sort -V \
             | awk -v current="$CURRENT_VERSION" '$0 > current {print; exit}')
 
           # 
