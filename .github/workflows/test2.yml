@@ -81,9 +81,9 @@ jobs:
           # PR-Body mit Übersicht und Konfigurationshinweisen
           body: |
             This PR contains the following updates:
-            | Package | Type | Update | Change |
+            | Package | Type | Update | Change | SHA256 |
             |---|---|---|---|
-            | selfoss | snapshot | minor | `${{ steps.check.outputs.cversion }}` → `${{ steps.check.outputs.version }}` |
+            | selfoss | snapshot | minor | `${{ steps.check.outputs.cversion }}` → `${{ steps.check.outputs.version }}` | `${{ steps.check.outputs.sha }}` |
 
             ---
 
