@@ -60,6 +60,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Load selfoss.${{ env.SOFTWARE_BUILD }} file
+        if: env.SOFTWARE_BUILD == 'release' || env.SOFTWARE_BUILD == 'snapshot'
         id: selfoss
         run: |
           set -a
@@ -71,6 +72,7 @@ jobs:
           echo "APP_DL_PATH=$URL" >> $GITHUB_OUTPUT
 
       - name: Display vars from selfoss.${{ env.SOFTWARE_BUILD }} file
+        if: env.SOFTWARE_BUILD == 'release' || env.SOFTWARE_BUILD == 'snapshot'
         run: |
           echo "Version: ${{ steps.selfoss.outputs.VERSION }}"
           echo "Hash: ${{ steps.selfoss.outputs.SHA256_HASH }}"
