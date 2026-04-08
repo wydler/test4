@@ -103,10 +103,7 @@ jobs:
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:latest, ${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
 
           elif [ "${{ env.SOFTWARE_BUILD }}" == "snapshot" ]; then
-            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ steps.selfoss.outputs.VERSION }}" >> $GITHUB_OUTPUT
-
-          elif [ "${{ env.SOFTWARE_BUILD }}" == "compose" ]; then
-            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:compose-master" >> $GITHUB_OUTPUT            
+            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ steps.selfoss.outputs.VERSION }}" >> $GITHUB_OUTPUT       
 
           else
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:$container_tag" >> $GITHUB_OUTPUT
