@@ -10,6 +10,7 @@ name: Build & publish docker images
         options: 
           - release
           - snapshot
+          - compose
         default: "release"
   release:
     types:
@@ -109,6 +110,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7.0.0
+        if: env.SOFTWARE_BUILD == 'release' || env.SOFTWARE_BUILD == 'snapshot'
         with:
           context: .
           file: Dockerfile
@@ -123,6 +125,7 @@ jobs:
 
       - name: Update Docker Repository Description
         uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa  # v5.0.0
+        if: env.SOFTWARE_BUILD == 'release'
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
