@@ -105,6 +105,9 @@ jobs:
           elif [ "${{ env.SOFTWARE_BUILD }}" == "snapshot" ]; then
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ steps.selfoss.outputs.VERSION }}" >> $GITHUB_OUTPUT
 
+          elif [ "${{ env.SOFTWARE_BUILD }}" == "compose" ]; then
+            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:compose-master" >> $GITHUB_OUTPUT            
+
           else
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:$container_tag" >> $GITHUB_OUTPUT
 
@@ -132,7 +135,7 @@ jobs:
           context: .
           file: Dockerfile.compose
           push: false
-          tags: compose-${{ steps.tags.outputs.docker }}
+          tags: ${{ steps.tags.outputs.docker }}
           platforms: ${{ env.REGISTRY_PLATFORMS }}
           cache-from: type=registry,ref=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ env.REGISTRY_REPO_TAG_CACHE_NAME }}
           cache-to: type=registry,ref=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ env.REGISTRY_REPO_TAG_CACHE_NAME }},mode=max          
