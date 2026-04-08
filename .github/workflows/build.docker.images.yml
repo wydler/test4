@@ -106,7 +106,7 @@ jobs:
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ steps.selfoss.outputs.VERSION }}" >> $GITHUB_OUTPUT
 
           elif [ "${{ env.SOFTWARE_BUILD }}" == "compose" ]; then
-            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:${{ steps.selfoss.outputs.VERSION }}" >> $GITHUB_OUTPUT            
+            echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:compose-$container_tag" >> $GITHUB_OUTPUT            
 
           else
             echo "docker=${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:$container_tag" >> $GITHUB_OUTPUT
