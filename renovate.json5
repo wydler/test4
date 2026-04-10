@@ -46,6 +46,8 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+      // erlaubt nur gleiche Major.Minor (z.B. 3.22.x)
+      allowedVersions: "<3.23.0",
     },
     {
       // ===========================================================================
