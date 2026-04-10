@@ -1,5 +1,5 @@
 ---
-name: Tools - Renovate
+name: Tools - Renovate dependency updates
 
 "on":
   workflow_dispatch:
