@@ -47,6 +47,7 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+      groupName: "docker dependencies",
     },
     {
       // ===========================================================================
