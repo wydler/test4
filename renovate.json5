@@ -1,37 +1,44 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    "config:base"
+    'config:recommended',
   ],
   commitMessagePrefix: 'chore(deps):',
   timezone: 'Europe/Berlin',
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
   automerge: false,
-
-  docker: {
-    enabled: true
-  },
-
   packageRules: [
     {
-      description: "Alpine base image updates",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["alpine"],
-      versioning: "docker",
-      automerge: false
-    }
-  ],
-
-  regexManagers: [
-    {
-      description: "Match Alpine versions in FROM statements",
-      fileMatch: ["(^|/)Dockerfile$"],
-      matchStrings: [
-        "FROM\\s+alpine:(?<currentValue>[0-9.]+)"
+      matchCategories: [
+        'docker',
       ],
-      depNameTemplate: "alpine",
-      datasourceTemplate: "docker"
-    }
-  ]
+      enabled: true,
+    },
+    {
+      description: 'Alpine base image updates',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'alpine',
+      ],
+      versioning: 'docker',
+      automerge: false,
+    },
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Match Alpine versions in FROM statements',
+      managerFilePatterns: [
+        '/(^|/)Dockerfile$/',
+      ],
+      matchStrings: [
+        'FROM\\s+alpine:(?<currentValue>[0-9.]+)',
+      ],
+      depNameTemplate: 'alpine',
+      datasourceTemplate: 'docker',
+    },
+  ],
 }
