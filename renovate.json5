@@ -19,7 +19,6 @@
       matchDatasources: ["docker"],
       matchPackageNames: ["alpine"],
       versioning: "docker",
-      groupName: "alpine updates",
       automerge: false
     }
   ],
