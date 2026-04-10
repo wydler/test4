@@ -10,35 +10,30 @@
   prConcurrentLimit: 0,
   automerge: false,
 
-  // Regex-basierte Manager für Selfoss
-  "regexManagers": [
+  docker: {
+    enabled: true
+  },
+
+  packageRules: [
     {
-      // Nur die Snapshot-Datei für Selfoss
-      "fileMatch": ["^selfoss\\.snapshot$"],
-
-      // Regex, um die aktuelle Version aus der Datei zu holen
-      "matchStrings": [
-        "VERSION=(?<currentValue>\\S+)"
-      ],
-
-      // Custom Datasource für Cloudsmith
-      "datasourceTemplate": "custom",
-      "depNameTemplate": "selfoss",
-      "versioningTemplate": "semver",
-
-      // Cloudsmith API URL für das Selfoss-Paket
-      "urlTemplate": "https://api.cloudsmith.io/v1/packages/fossar/selfoss-git/lggOWzAwE6Dq/",
-
-      // Template, um die Version aus der API-Antwort zu ziehen
-      "extractVersionTemplate": "{{{json.version}}}"
+      description: "Alpine base image updates",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["alpine"],
+      versioning: "docker",
+      groupName: "alpine updates",
+      automerge: false
     }
   ],
 
-  // Alles andere deaktivieren, nur selfoss-Updates
-  "packageRules": [
+  regexManagers: [
     {
-      "matchPackageNames": ["selfoss"],
-      "enabled": true
+      description: "Match Alpine versions in FROM statements",
+      fileMatch: ["(^|/)Dockerfile$"],
+      matchStrings: [
+        "FROM\\s+alpine:(?<currentValue>[0-9.]+)"
+      ],
+      depNameTemplate: "alpine",
+      datasourceTemplate: "docker"
     }
   ]
 }
