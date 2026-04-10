@@ -13,7 +13,6 @@
     'github-actions',
     'dockerfile',
   ],
-  rangeStrategy: "pin",
 
   packageRules: [
     {
@@ -47,7 +46,7 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
-      groupName: "docker dependencies",
+      matchUpdateTypes: ["patch"],
     },
     {
       // ===========================================================================
