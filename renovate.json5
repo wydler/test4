@@ -2,31 +2,19 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
     'config:recommended',
+    'helpers:pinGitHubActionDigests',
   ],
   commitMessagePrefix: 'chore(deps):',
   timezone: 'Europe/Berlin',
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
   automerge: false,
-  packageRules: [
-    {
-      matchCategories: [
-        'docker',
-      ],
-      enabled: true,
-    },
-    {
-      description: 'Alpine base image updates',
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        'alpine',
-      ],
-      versioning: 'docker',
-      automerge: false,
-    },
+  enabledManagers: [
+    'github-actions',
+    'custom.regex',
+    'dockerfile',
   ],
+
   customManagers: [
     {
       customType: 'regex',
@@ -39,6 +27,59 @@
       ],
       depNameTemplate: 'alpine',
       datasourceTemplate: 'docker',
+    },
+  ],
+
+  packageRules: [
+    {
+      matchCategories: [
+        'docker',
+      ],
+      enabled: true,
+    },
+    {
+    {
+      // ===========================================================================
+      // Docker Repository - Alpine
+      // ===========================================================================  
+      description: 'Alpine base image updates',
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'alpine',
+      ],
+      versioning: 'docker',
+      rangeStrategy: 'pin',
+      labels: [
+        'dependencies',
+        'docker',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'docker/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
+    {
+      // ===========================================================================
+      // GitHub Actions
+      // ===========================================================================  
+      matchManagers: [
+        'github-actions',
+      ],
+      labels: [
+        'dependencies',
+        'github_actions',
+      ],
+      matchPackageNames: [
+        '*',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'github_action/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
   ],
 }
