@@ -36,7 +36,9 @@
         'alpine',
       ],
       versioning: 'docker',
-      rangeStrategy: 'pin',
+      matchUpdateTypes: [
+        'patch',
+      ],
       labels: [
         'dependencies',
         'docker',
@@ -46,7 +48,6 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
-      matchUpdateTypes: ["patch"],
     },
     {
       // ===========================================================================
