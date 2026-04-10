@@ -13,6 +13,12 @@ name: Renovate
         default: "info"
 
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
