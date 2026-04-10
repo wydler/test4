@@ -16,6 +16,9 @@
 
   packageRules: [
     {
+      // ===========================================================================
+      // Aktiviert Renovate-Regeln für Docker-basierte Dependencies
+      // ===========================================================================  
       matchCategories: [
         'docker',
       ],
