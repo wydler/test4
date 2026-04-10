@@ -15,21 +15,6 @@
     'dockerfile',
   ],
 
-  customManagers: [
-    {
-      customType: 'regex',
-      description: 'Match Alpine versions in FROM statements',
-      managerFilePatterns: [
-        '/(^|/)Dockerfile$/',
-      ],
-      matchStrings: [
-        'FROM\\s+alpine:(?<currentValue>[0-9.]+)',
-      ],
-      depNameTemplate: 'alpine',
-      datasourceTemplate: 'docker',
-    },
-  ],
-
   packageRules: [
     {
       matchCategories: [
