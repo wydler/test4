@@ -79,6 +79,7 @@
       ],
       versioning: 'docker',
       ignoreUnstable: true,
+      pinDigests: true,
       labels: [
         'dependencies',
         'docker',
