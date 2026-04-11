@@ -79,6 +79,7 @@
       ],
       matchPackageNames: [
         'elasticsearch',
+        'kibana',
       ],
       // matchFileNames: [
       //  'docker/parsedmarc/**',
