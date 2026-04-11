@@ -82,7 +82,6 @@
       ],
       versioning: 'docker',
       allowedVersions: '3.14.x',
-      ignoreUnstable: true,
       labels: [
         'dependencies',
         'docker',
