@@ -78,7 +78,7 @@
         'docker',
       ],
       matchPackageNames: [
-        'ocker.elastic.co/elasticsearch/elasticsearch',
+        'docker.elastic.co/elasticsearch/elasticsearch',
         'docker.elastic.co/kibana/kibana',
       ],
       // matchFileNames: [
