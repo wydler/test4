@@ -46,7 +46,7 @@
     },
     {
       // ===========================================================================
-      // Docker Repository - Pyhton
+      // Docker Repository - Pyhton, Geoipupdate, Nginx, Apline,
       // =========================================================================== 
       matchDatasources: [
         'docker',
@@ -54,6 +54,8 @@
       matchPackageNames: [
         'python',
         'ghcr.io/maxmind/geoipupdate',
+        'nginx',
+        'alpine',
       ],
       // matchFileNames: [
       //   'docker/parsedmarc/**',
@@ -73,7 +75,7 @@
     },
     {
       // ===========================================================================
-      // Docker Repository - Pyhton
+      // Docker Repository - Elasticsearch und Kibana
       // =========================================================================== 
       matchDatasources: [
         'docker',
