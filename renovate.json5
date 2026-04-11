@@ -67,9 +67,9 @@
       matchPackageNames: [
         '*',
       ],
-      matchFileNames: [
-        'docker/parsedmarc/**',
-      ],
+      // matchFileNames: [
+      //  'docker/parsedmarc/**',
+      // ],
       versioning: 'docker',
       ignoreUnstable: true,
       pinDigests: true,
