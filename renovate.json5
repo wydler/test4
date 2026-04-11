@@ -69,5 +69,25 @@
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
+    {
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'python',
+      ],
+
+      "allowedVersions": "^3\\.14\\.[0-9]+-slim$",
+      "ignoreUnstable": true,
+      labels: [
+        'dependencies',
+        'docker',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'docker/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
   ],
 }
