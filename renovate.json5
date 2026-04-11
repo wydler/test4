@@ -16,11 +16,10 @@
   ],
 
   pip_requirements: {
-    fileMatch: [
-      '^docker/parsedmarc/requirements\\.txt$'
+    managerFilePatterns: [
+      '/^docker/parsedmarc/requirements\\.txt$/',
     ],
   },
-
 
   packageRules: [
     {
