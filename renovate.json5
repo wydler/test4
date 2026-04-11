@@ -17,8 +17,8 @@
 
   pip_requirements: {
     fileMatch: [
-      "^docker/parsedmarc/requirements\\.txt$"
-    ]
+      '^docker/parsedmarc/requirements\\.txt$'
+    ],
   },
 
 
