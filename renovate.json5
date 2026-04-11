@@ -12,9 +12,34 @@
   enabledManagers: [
     'github-actions',
     'dockerfile',
+    'pip_requirements',
   ],
 
+  "pip_requirements": {
+    "fileMatch": [
+      "^docker/parsedmarc/requirements\\.txt$"
+    ]
+  },
+
+
   packageRules: [
+    {
+      // ===========================================================================
+      // XXXXX
+      // ===========================================================================  
+      matchManagers: [
+        'pip_requirements',
+      },
+      labels: [
+        'dependencies',
+        'github_actions',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'github_action/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
     {
       // ===========================================================================
       // Aktiviert Renovate-Regeln für Docker-basierte Dependencies
@@ -31,12 +56,12 @@
       matchManagers: [
         'github-actions',
       ],
+      matchPackageNames: [
+        '*',
+      ],
       labels: [
         'dependencies',
         'github_actions',
-      ],
-      matchPackageNames: [
-        '*',
       ],
       draftPR: true,
       additionalBranchPrefix: 'github_action/',
