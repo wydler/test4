@@ -45,19 +45,6 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        'elasticsearch',
-        'kibana',
-      ],
-      matchUpdateTypes: [
-        'major',
-      ],
-      enabled: false
-    },
-    {
       // ===========================================================================
       // Docker Repository - Pyhton
       // =========================================================================== 
@@ -77,6 +64,7 @@
         'dependencies',
         'docker',
       ],
+      allowedVersions: '<9.0.0'
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
