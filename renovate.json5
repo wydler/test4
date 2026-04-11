@@ -32,7 +32,7 @@
       ],
       labels: [
         'dependencies',
-        'github_actions',
+        'apps',
       ],
       draftPR: true,
       additionalBranchPrefix: 'github_action/',
@@ -61,7 +61,7 @@
       ],
       labels: [
         'dependencies',
-        'apps',
+        'github_actions',
       ],
       draftPR: true,
       additionalBranchPrefix: 'github_action/',
