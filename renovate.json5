@@ -52,6 +52,32 @@
         'docker',
       ],
       matchPackageNames: [
+        'python',
+      ],
+      matchFileNames: [
+        'docker/parsedmarc/**',
+      ],
+      versioning: 'docker',
+      ignoreUnstable: true,
+      pinDigests: true,
+      labels: [
+        'dependencies',
+        'docker',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'docker/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
+    {
+      // ===========================================================================
+      // Docker Repository - Pyhton
+      // =========================================================================== 
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
         '*',
       ],
       // matchFileNames: [
