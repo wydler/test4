@@ -1,5 +1,5 @@
 # Reference image
-FROM docker.elastic.co/kibana/kibana:8.19.13@sha256:d6faadfcd7b03bcb28b411654d590379de86b031040ad33d8fc456f1d5e567b7
+FROM docker.elastic.co/kibana/kibana:8.19.14@sha256:4ac0a03c1d4355129c394f2c97740332623cfac43fbad2a8f5d47b6eb81f84bd
 
 # Metadata
 LABEL maintainer="Daniel Wydler"
