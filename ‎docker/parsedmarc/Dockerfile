@@ -1,5 +1,5 @@
 # Reference image
-FROM python:3.14.4-slim
+FROM python:3.14.4-slim@sha256:13c5640e79ce15c280f6a3d63c6e17d14420d26821e406c211a7cc332e9782b2
 
 # Metadata
 LABEL maintainer="Daniel Wydler"
