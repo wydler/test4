@@ -95,5 +95,28 @@
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
+    {
+      // ===========================================================================
+      // Docker Repository - Custom
+      // =========================================================================== 
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'wydler/logrotate',
+      ],
+      versioning: 'docker',
+      ignoreUnstable: true,
+      pinDigests: true,
+      labels: [
+        'dependencies',
+        'docker',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'docker/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
   ],
 }
