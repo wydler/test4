@@ -78,7 +78,7 @@
         'python',
       ],
       versioning: 'docker',
-      ignoreUnstable: true,
+      allowedVersions: '3.14.x',
       labels: [
         'dependencies',
         'docker',
