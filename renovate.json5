@@ -52,7 +52,7 @@
         'docker',
       ],
       matchPackageNames: [
-        'python',
+        '*',
       ],
       versioning: 'docker',
       ignoreUnstable: true,
