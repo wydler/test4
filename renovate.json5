@@ -57,9 +57,6 @@
         'nginx',
         'alpine',
       ],
-      // matchFileNames: [
-      //   'docker/parsedmarc/**',
-      // ],
       versioning: 'docker',
       ignoreUnstable: true,
       pinDigests: true,
@@ -84,9 +81,6 @@
         'docker.elastic.co/elasticsearch/elasticsearch',
         'docker.elastic.co/kibana/kibana',
       ],
-      // matchFileNames: [
-      //  'docker/parsedmarc/**',
-      // ],
       versioning: 'docker',
       ignoreUnstable: true,
       pinDigests: true,
