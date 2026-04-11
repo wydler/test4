@@ -77,7 +77,7 @@
         'python',
       ],
       // allowedVersions: "^3\\.14\\.[0-9]+-slim$",
-      "llowedVersions: "3.14.x"
+      allowedVersions: "3.14.x"
       versioning: "docker",
       // matchUpdateTypes: [
       //  'patch'
