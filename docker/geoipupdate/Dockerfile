@@ -1,5 +1,5 @@
 # Reference image
-FROM ghcr.io/maxmind/geoipupdate:v7.1.1
+FROM ghcr.io/maxmind/geoipupdate:v7.1.0
 
 # Metadata
 LABEL maintainer="Daniel Wydler"
