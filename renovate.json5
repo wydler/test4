@@ -64,7 +64,7 @@
         'dependencies',
         'docker',
       ],
-      allowedVersions: '<9.0.0'
+      allowedVersions: '<9.0.0',
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
