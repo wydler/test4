@@ -65,7 +65,7 @@
         'docker',
       ],
       matchPackageNames: [
-        'python',
+        '*',
       ],
       matchFileNames: [
         'docker/parsedmarc/**',
