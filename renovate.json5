@@ -14,19 +14,13 @@
     'dockerfile',
     'pip_requirements',
   ],
-
   pip_requirements: {
-    fileMatch: [
-      '^docker/parsedmarc/requirements\\.txt$'
+    managerFilePatterns: [
+      '/^docker/parsedmarc/requirements\\.txt$/',
     ],
   },
-
-
   packageRules: [
     {
-      // ===========================================================================
-      // XXXXX
-      // ===========================================================================  
       matchManagers: [
         'pip_requirements',
       ],
@@ -41,18 +35,12 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      // ===========================================================================
-      // Aktiviert Renovate-Regeln für Docker-basierte Dependencies
-      // ===========================================================================  
       matchCategories: [
         'docker',
       ],
       enabled: true,
     },
     {
-      // ===========================================================================
-      // GitHub Actions
-      // ===========================================================================  
       matchManagers: [
         'github-actions',
       ],
@@ -70,9 +58,6 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      // ===========================================================================
-      // Docker Repository - Pyhton, Geoipupdate, Nginx, Apline
-      // =========================================================================== 
       matchDatasources: [
         'docker',
       ],
@@ -96,9 +81,6 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      // ===========================================================================
-      // Docker Repository - Elasticsearch und Kibana
-      // =========================================================================== 
       matchDatasources: [
         'docker',
       ],
@@ -121,9 +103,6 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      // ===========================================================================
-      // Docker Repository - Custom
-      // =========================================================================== 
       matchDatasources: [
         'docker',
       ],
