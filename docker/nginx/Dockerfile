@@ -1,5 +1,5 @@
 # Reference image
-FROM nginx:1.29.8
+FROM nginx:1.29.7
 
 # Metadata
 LABEL maintainer="Daniel Wydler"
