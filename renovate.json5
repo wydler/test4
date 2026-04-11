@@ -52,9 +52,34 @@
         'docker',
       ],
       matchPackageNames: [
-        '*',
+        'python',
       ],
       versioning: 'docker',
+      ignoreUnstable: true,
+      pinDigests: true,
+      labels: [
+        'dependencies',
+        'docker',
+      ],
+      draftPR: true,
+      additionalBranchPrefix: 'docker/',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      commitMessageTopic: '{{depName}}',
+      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+    },
+    {
+      // ===========================================================================
+      // Docker Repository - Pyhton
+      // =========================================================================== 
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'elasticsearch',
+        'kibana',
+      ],
+      versioning: 'docker',
+      allowedVersions: '<9.0.0',
       ignoreUnstable: true,
       pinDigests: true,
       labels: [
