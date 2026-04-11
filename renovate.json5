@@ -29,7 +29,7 @@
       // ===========================================================================  
       matchManagers: [
         'pip_requirements',
-      },
+      ],
       labels: [
         'dependencies',
         'github_actions',
