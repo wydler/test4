@@ -53,10 +53,11 @@
       ],
       matchPackageNames: [
         'python',
+        'ghcr.io/maxmind/geoipupdate',
       ],
-      matchFileNames: [
-        'docker/parsedmarc/**',
-      ],
+      // matchFileNames: [
+      //   'docker/parsedmarc/**',
+      // ],
       versioning: 'docker',
       ignoreUnstable: true,
       pinDigests: true,
