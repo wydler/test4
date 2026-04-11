@@ -46,7 +46,7 @@
     },
     {
       // ===========================================================================
-      // Docker Repository - Pyhton, Geoipupdate, Nginx, Apline,
+      // Docker Repository - Pyhton, Geoipupdate, Nginx, Apline
       // =========================================================================== 
       matchDatasources: [
         'docker',
