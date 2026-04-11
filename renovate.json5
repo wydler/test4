@@ -45,27 +45,17 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
-      // ===========================================================================
-      // Docker Repository - Pyhton
-      // =========================================================================== 
       matchDatasources: [
         'docker',
       ],
       matchPackageNames: [
-        'python',
+        'elasticsearch',
+        'kibana',
       ],
-      versioning: 'docker',
-      ignoreUnstable: true,
-      pinDigests: true,
-      labels: [
-        'dependencies',
-        'docker',
+      matchUpdateTypes: [
+        'major',
       ],
-      draftPR: true,
-      additionalBranchPrefix: 'docker/',
-      branchTopic: '{{depNameSanitized}}-{{newVersion}}',
-      commitMessageTopic: '{{depName}}',
-      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+      enabled: false
     },
     {
       // ===========================================================================
@@ -75,11 +65,9 @@
         'docker',
       ],
       matchPackageNames: [
-        'elasticsearch',
-        'kibana',
+        ''',
       ],
       versioning: 'docker',
-      allowedVersions: '<9.0.0',
       ignoreUnstable: true,
       pinDigests: true,
       labels: [
