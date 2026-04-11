@@ -76,9 +76,8 @@
       matchPackageNames: [
         'python',
       ],
-
-      "allowedVersions": "^3\\.14\\.[0-9]+-slim$",
-      "ignoreUnstable": true,
+      allowedVersions: "^3\\.14\\.[0-9]+-slim$",
+      ignoreUnstable: true,
       labels: [
         'dependencies',
         'docker',
