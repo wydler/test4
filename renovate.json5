@@ -81,7 +81,6 @@
         'docker/parsedmarc/**',
       ],
       versioning: 'docker',
-      allowedVersions: '3.14.x',
       labels: [
         'dependencies',
         'docker',
