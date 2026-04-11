@@ -45,6 +45,19 @@
       commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
     },
     {
+      matchDatasources: [
+        'docker',
+      ],
+      matchPackageNames: [
+        'elasticsearch',
+        'kibana',
+      ],
+      matchUpdateTypes: [
+        'major',
+      ],
+      enabled: false
+    },
+    {
       // ===========================================================================
       // Docker Repository - Pyhton
       // =========================================================================== 
