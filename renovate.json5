@@ -120,7 +120,7 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       // commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
-      commitMessageExtra: 'from {{#if currentVersion}}{{currentVersion}}{{else}}{{currentDigest}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigest}}{{/if}}',
+      commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
     },
     {
       // ===========================================================================
@@ -144,7 +144,7 @@
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
       //commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
-      commitMessageExtra: 'from {{#if currentVersion}}{{currentVersion}}{{else}}{{currentDigest}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigest}}{{/if}}',
+      commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
     },
   ],
 }
