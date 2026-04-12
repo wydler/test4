@@ -92,7 +92,7 @@
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       // branchTopic: '{{depNameSanitized}}-{{newVersion}}',
-      branchTopic: '{{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
+      branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
       commitMessageTopic: '{{depName}}',
       // commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
       commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
