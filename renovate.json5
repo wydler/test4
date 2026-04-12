@@ -91,7 +91,7 @@
       ],
       draftPR: true,
       additionalBranchPrefix: 'docker/',
-      // branchTopic: '{{depNameSanitized}}-{{newVersion}}',
+      branchTopic: '{{depNameSanitized}}-{{newVersion}}-{{#if isLockfileUpdate}}-lockfile{{/if}}',
       // branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
       commitMessageTopic: '{{depName}}',
       // commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
