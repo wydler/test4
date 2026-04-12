@@ -80,7 +80,7 @@
         'ghcr.io/maxmind/geoipupdate',
         'nginx',
         'alpine',
-        'debian'
+        'debian',
       ],
       versioning: 'docker',
       ignoreUnstable: true,
