@@ -45,4 +45,4 @@ jobs:
           # This flag will stop renovate from trying to create an onboarding PR, instead it will look for renovate.json file and run
           RENOVATE_ONBOARDING: "false"
           RENOVATE_DEPENDENCY_DASHBOARD_AUTOCLOSE: "true"
-          RENOVATE_DEPENDENCY_DASHBOARD_LABELS: "Task"
+          RENOVATE_DEPENDENCY_DASHBOARD_TITLE: "Renovate Dependency Dashboard"
