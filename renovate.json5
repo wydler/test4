@@ -141,7 +141,8 @@
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{newVersion}}',
       commitMessageTopic: '{{depName}}',
-      commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+      //commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
+      commitMessageExtra: 'from {{#if currentVersion}}{{currentVersion}}{{else}}{{currentDigest}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigest}}{{/if}}',
     },
   ],
 }
