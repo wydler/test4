@@ -95,7 +95,7 @@
       // branchTopic: '{{{depNameSanitized}}}-{{{newMajor}}}{{#if separateMinorPatch}}{{#if isPatch}}.{{{newMinor}}}{{/if}}{{/if}}{{#if separateMultipleMinor}}{{#if isMinor}}.{{{newMinor}}}{{/if}}{{/if}}.x{{#if isLockfileUpdate}}-lockfile{{/if}}',
       // branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
       // branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
-      branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{newValue}}-{{{replace 'sha256:' '' newDigest}}}',
+      branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{newValue}}-{{{replace "sha256:" "" newDigest}}}',
       commitMessageTopic: '{{depName}}',
       // commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
       commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
