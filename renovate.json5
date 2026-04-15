@@ -102,7 +102,8 @@
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
       commitMessageTopic: '{{depName}}',
       // commitMessageExtra: 'from {{currentVersion}} to {{newVersion}}',
-      commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
+      // commitMessageExtra: 'from {{#if newVersion}}{{currentVersion}}{{else}}{{currentDigestShort}}{{/if}} to {{#if newVersion}}{{newVersion}}{{else}}{{newDigestShort}}{{/if}}',
+      commitMessageExtra: '{{#if newVersion}}from {{currentVersion}} to {{newVersion}}{{else}}{{newValue}} from {{currentDigestShort}} to {{newDigestShort}}{{/if}}',
     },
     {
       // ===========================================================================
