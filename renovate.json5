@@ -75,9 +75,6 @@
       matchPackageNames: [
         'ubuntu',
       ],
-      matchDepNames: [
-        'ubuntu',
-      ],
       matchUpdateTypes: [
         'digest',
       ],
