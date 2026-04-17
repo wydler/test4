@@ -77,7 +77,6 @@
       matchPackageNames: [
         'ubuntu',
       ],
-      versioning: 'docker',
       matchCurrentValue: '22.04',
       matchUpdateTypes: [
         'digest'
