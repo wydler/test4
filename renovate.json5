@@ -75,7 +75,7 @@
         'docker',
       ],
       matchPackageNames: [
-        'library/ubuntu',
+        'ubuntu',
       ],
       versioning: 'docker',
       matchCurrentValue: '22.04',
