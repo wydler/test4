@@ -77,10 +77,9 @@
       matchPackageNames: [
         'ubuntu',
       ],
-      matchCurrentValue: '22.04',
-      matchUpdateTypes: [
-        'digest'
-      ],
+      versioning: 'ubuntu',
+      allowedVersions: '/^22\\.04$/',
+
       pinDigests: true,
       labels: [
         'dependencies',
