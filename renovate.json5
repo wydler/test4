@@ -47,7 +47,7 @@
     },
     {
       // ===========================================================================
-      // Docker Repository - Pyhton, Geoipupdate, Nginx, Apline
+      // Docker Repository - Nginx
       // =========================================================================== 
       matchDatasources: [
         'docker',
@@ -89,6 +89,6 @@
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
       commitMessageTopic: '{{depName}}',
       commitMessageExtra: '{{#if newVersion}}from {{currentVersion}} to {{newVersion}}{{else}}{{newValue}} from {{currentDigestShort}} to {{newDigestShort}}{{/if}}',
-    }
+    },
   ],
 }
