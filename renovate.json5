@@ -57,6 +57,7 @@
         'ubuntu',
       ],
       versioning: 'docker',
+      matchCurrentValue: '22.04',
       ignoreUnstable: true,
       pinDigests: true,
       labels: [
