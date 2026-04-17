@@ -78,7 +78,7 @@
         'ubuntu',
       ],
       versioning: 'docker',
-      allowedVersions: '/^22\\.04$/',
+      matchCurrentValue: '22.04',
       matchUpdateTypes: [
         'digest'
       ],
