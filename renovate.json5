@@ -54,33 +54,10 @@
       ],
       matchPackageNames: [
         'nginx',
+        'ubuntu',
       ],
       versioning: 'docker',
       ignoreUnstable: true,
-      pinDigests: true,
-      labels: [
-        'dependencies',
-        'docker',
-      ],
-      draftPR: true,
-      additionalBranchPrefix: 'docker/',
-      branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
-      commitMessageTopic: '{{depName}}',
-      commitMessageExtra: '{{#if newVersion}}from {{currentVersion}} to {{newVersion}}{{else}}{{newValue}} from {{currentDigestShort}} to {{newDigestShort}}{{/if}}',
-    },
-    {
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        'ubuntu',
-      ],
-      matchDepNames: [
-        'ubuntu',
-      ],
-      matchUpdateTypes: [
-        'digest',
-      ],
       pinDigests: true,
       labels: [
         'dependencies',
