@@ -83,6 +83,7 @@
       matchUpdateTypes: [
         'digest',
       ],
+      matchCurrentValue: '22.04',
       pinDigests: true,
       labels: [
         'dependencies',
