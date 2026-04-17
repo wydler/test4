@@ -78,7 +78,10 @@
         'ubuntu',
       ],
       versioning: 'docker',
-      matchCurrentValue: '22.04',
+      allowedVersions: '/^22\\.04$/',
+      matchUpdateTypes: [
+        'digest'
+      ],
       pinDigests: true,
       labels: [
         'dependencies',
