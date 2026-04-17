@@ -1,5 +1,5 @@
 # Reference image
-FROM ubuntu:22.04@sha256:c9672795a48854502d9dc0f1b719ac36dd99259a2f8ce425904a5cb4ae0d60d2
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
 
 # Metadata
 LABEL org.opencontainers.image.authors="Daniel Wydler"
