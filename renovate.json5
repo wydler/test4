@@ -77,7 +77,7 @@
       matchPackageNames: [
         'ubuntu',
       ],
-      versioning: 'ubuntu',
+      // versioning: 'ubuntu',
       // allowedVersions: '/^22\\.04$/',
       // allowedVersions: '22.04',
       matchUpdateTypes: [
