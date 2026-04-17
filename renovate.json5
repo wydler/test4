@@ -79,7 +79,7 @@
       ],
       versioning: 'ubuntu',
       // allowedVersions: '/^22\\.04$/',
-      allowedVersions: '22.04',
+      // allowedVersions: '22.04',
 
       pinDigests: true,
       labels: [
