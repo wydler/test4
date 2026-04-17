@@ -13,22 +13,14 @@
     'github-actions',
     'dockerfile',
   ],
-
-
   packageRules: [
     {
-      // ===========================================================================
-      // Aktiviert Renovate-Regeln für Docker-basierte Dependencies
-      // ===========================================================================  
       matchCategories: [
         'docker',
       ],
       enabled: true,
     },
     {
-      // ===========================================================================
-      // GitHub Actions
-      // ===========================================================================  
       matchManagers: [
         'github-actions',
       ],
@@ -46,9 +38,6 @@
       commitMessageExtra: '{{#if newVersion}}from {{currentVersion}} to {{newVersion}}{{else}}{{newValue}} from {{currentDigestShort}} to {{newDigestShort}}{{/if}}',
     },
     {
-      // ===========================================================================
-      // Docker Repository - Nginx
-      // =========================================================================== 
       matchDatasources: [
         'docker',
       ],
@@ -75,9 +64,7 @@
       matchPackageNames: [
         'ubuntu',
       ],
-      allowedVersions: [
-        'jammy',
-      ],
+      allowedVersions: 'jammy',
       versioning: 'docker',
       pinDigests: true,
       labels: [
