@@ -80,6 +80,7 @@
         'ghcr.io/maxmind/geoipupdate',
         'nginx',
         'alpine',
+        'wydler/logrotate',
       ],
       versioning: 'docker',
       ignoreUnstable: true,
@@ -113,29 +114,6 @@
         'docker',
       ],
       allowedVersions: '<9.0.0',
-      draftPR: true,
-      additionalBranchPrefix: 'docker/',
-      branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
-      commitMessageTopic: '{{depName}}',
-      commitMessageExtra: '{{#if newVersion}}from {{currentVersion}} to {{newVersion}}{{else}}{{newValue}} from {{currentDigestShort}} to {{newDigestShort}}{{/if}}',
-    },
-    {
-      // ===========================================================================
-      // Docker Repository - Custom
-      // =========================================================================== 
-      matchDatasources: [
-        'docker',
-      ],
-      matchPackageNames: [
-        'wydler/logrotate',
-      ],
-      versioning: 'docker',
-      ignoreUnstable: true,
-      pinDigests: true,
-      labels: [
-        'dependencies',
-        'docker',
-      ],
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
