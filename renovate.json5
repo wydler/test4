@@ -32,6 +32,9 @@
 
       // sorgt dafür, dass Docker Tags korrekt verglichen werden
       versioningTemplate: "docker"
+
+      // 🔒 HARD LOCK: verhindert 8.5, 9.x etc.
+      allowedVersions: ">=8.4.0 <8.5.0"
     }
   ],
 
