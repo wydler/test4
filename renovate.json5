@@ -14,6 +14,26 @@
     'dockerfile',
   ],
 
+  // Regex Manager für Dockerfile PHP Base Image
+  regexManagers: [
+    {
+      description: "PHP 8.4 FPM Docker image tracking",
+
+      fileMatch: [
+        "(^|/)Dockerfile$"
+      ],
+
+      matchStrings: [
+        "FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)"
+      ],
+
+      datasourceTemplate: "docker",
+      depNameTemplate: "php",
+
+      // sorgt dafür, dass Docker Tags korrekt verglichen werden
+      versioningTemplate: "docker"
+    }
+  ],
 
   packageRules: [
     {
@@ -78,7 +98,6 @@
       ],
       matchPackageNames: [
         'php',
-
       ],
       versioning: 'docker',
       ignoreUnstable: true,
@@ -87,7 +106,6 @@
         'dependencies',
         'docker',
       ],
-      allowedVersions: '/^8\\.4\\./',
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
