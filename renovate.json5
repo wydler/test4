@@ -17,14 +17,14 @@
   // Regex Manager für Dockerfile PHP Base Image
   regexManagers: [
     {
-      description: "PHP 8.4 FPM Docker image tracking",
+      description: 'PHP 8.4 FPM Docker image tracking',
 
       fileMatch: [
-        "(^|/)Dockerfile$"
+        '(^|/)Dockerfile$',
       ],
 
       matchStrings: [
-        "FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)"
+        'FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)',
       ],
 
       datasourceTemplate: "docker",
