@@ -31,10 +31,10 @@
       depNameTemplate: "php",
 
       // sorgt dafür, dass Docker Tags korrekt verglichen werden
-      versioningTemplate: "docker"
+      versioningTemplate: "docker",
 
       // 🔒 HARD LOCK: verhindert 8.5, 9.x etc.
-      allowedVersions: ">=8.4.0 <8.5.0"
+      allowedVersions: ">=8.4.0 <8.5.0",
     }
   ],
 
