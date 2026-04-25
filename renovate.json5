@@ -13,21 +13,7 @@
     'github-actions',
     'dockerfile',
   ],
-  customManagers: [
-    {
-      description: 'PHP 8.4 FPM Docker image tracking',
 
-      fileMatch: [
-        '(^|/)Dockerfile$',
-      ],
-      matchStrings: [
-        'FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)',
-      ],
-      datasourceTemplate: 'docker',
-      depNameTemplate: 'php',
-      versioningTemplate: 'docker',
-    },
-  ],
   packageRules: [
     {
       matchCategories: [
@@ -87,7 +73,7 @@
         'dependencies',
         'docker',
       ],
-      allowedVersions: '>=8.4.0 <8.5.0',
+      allowedVersions: "8\\.4\\..*-fpm",
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
