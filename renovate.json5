@@ -15,10 +15,10 @@
   ],
   customManagers: [
     {
-      customType: 'regex',
       description: 'PHP 8.4 FPM Docker image tracking',
-      managerFilePatterns: [
-        '/(^|/)Dockerfile$/',
+
+      fileMatch: [
+        '(^|/)Dockerfile$',
       ],
       matchStrings: [
         'FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)',
