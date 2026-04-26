@@ -66,14 +66,13 @@
       matchPackageNames: [
         'php',
       ],
-      versioning: 'docker',
+      versioning: 'regex:^(?<major>8)\\.(?<minor>4)\\.(?<patch>\\d+)-fpm$',
       ignoreUnstable: true,
       pinDigests: true,
       labels: [
         'dependencies',
         'docker',
       ],
-      allowedVersions: '<8.5.0',
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
