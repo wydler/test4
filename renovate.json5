@@ -13,21 +13,7 @@
     'github-actions',
     'dockerfile',
   ],
-  customManagers: [
-    {
-      customType: 'regex',
-      description: 'PHP 8.4 FPM Docker image',
-      managerFilePatterns: [
-        '/(^|/)Dockerfile$/',
-      ],
-      matchStrings: [
-        'FROM\\s+php:(?<currentValue>8\\.4\\.[0-9]+-fpm)',
-      ],
-      datasourceTemplate: 'docker',
-      depNameTemplate: 'php',
-      versioningTemplate: 'regex:^(?<major>8)\\.(?<minor>4)\\.(?<patch>\\d+)-fpm$',
-    },
-  ],
+
   packageRules: [
     {
       matchCategories: [
@@ -80,13 +66,14 @@
       matchPackageNames: [
         'php',
       ],
-      versioning: 'regex:^(?<major>8)\\.(?<minor>4)\\.(?<patch>\\d+)-fpm$',
+      versioning: 'docker',
       ignoreUnstable: true,
       pinDigests: true,
       labels: [
         'dependencies',
         'docker',
       ],
+      allowedVersions: '<8.5.0',
       draftPR: true,
       additionalBranchPrefix: 'docker/',
       branchTopic: '{{depNameSanitized}}-{{#if newVersion}}{{newVersion}}{{else}}{{currentValue}}-{{newDigest}}{{/if}}',
