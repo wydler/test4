@@ -107,3 +107,25 @@ jobs:
             Write-Output "`n$destination`n"
             Move-Item -Path $file -Destination $destination
           }
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@a284dc1814e3fd07f2e34267fc8f81227ed29fb8  # v45.0.9
+        with:
+          files: |
+            **.cer
+            **.der
+            **.pem
+
+      - name: Create Pull Request
+        uses: devops-infra/action-pull-request@v0.6.0
+        with:
+          github_token: ${{ secrets.NSP_GH_TOKEN }}
+          source_branch: ${{ github.ref_name }}
+          target_branch: main
+          title: "Automated certificate upload"
+          body: |
+            This PR was automatically created after processing uploaded certificates.
+            
+            - Certificates were validated
+            - Files were reorganized into CA structure
