@@ -20,7 +20,8 @@ jobs:
       - name: Check file name and location
         shell: pwsh
         run: |
-
+          cd $GITHUB_WORKSPACE
+          
           $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
 
 
@@ -106,16 +107,9 @@ jobs:
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$destination`n"
             Move-Item -Path $file -Destination $destination
-          }
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@a284dc1814e3fd07f2e34267fc8f81227ed29fb8  # v45.0.9
-        with:
-          files: |
-            **.cer
-            **.der
-            **.pem
+            git status
+          }
 
       - name: Create Pull Request
         uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
