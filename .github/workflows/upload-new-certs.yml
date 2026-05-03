@@ -66,10 +66,13 @@ jobs:
 
           # Retrieving files in all directories that have the file types cer, der, and pem
           # The column named Fullname is passed to the loop.            
-          Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname | ForEach-Object {
+          # Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname | ForEach-Object {
+          $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname
 
-            #  Declaration and initialization of variables for the loop
-            [string] $strFile = $_
+          foreach ($strFile in $files) {
+
+            # Declaration and initialization of variables for the loop
+            # [string] $strFile = $_
             write-output "$strFile"
 
             $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($strFile)
