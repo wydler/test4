@@ -125,8 +125,27 @@ jobs:
             if (Test-Path -LiteralPath $destination) {
 
               Write-Output "CA Cert bereits vorhanden."
-
               Remove-Item -LiteralPath "$file" -Confirm:$false
+
+              # Set global options
+              # https://git-scm.com/docs/git-config
+              # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
+              git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
+              git config --local user.name "${{ env.GH_ACTOR }}"
+
+              # Add contents of new or changed files to the index
+              # https://git-scm.com/docs/git-add
+              # git add $destination
+              git add $file
+
+              # Create a new commit containing the current contents of the index and the given log message describing the changes
+              # https://git-scm.com/docs/git-commit
+              git commit -m "Remove $(Split-Path $file -Leaf)"
+
+              # Update remote refs along with associated objects
+              # https://git-scm.com/docs/git-push
+              git push origin HEAD
+              
             }
             else {
             
