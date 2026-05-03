@@ -112,7 +112,16 @@ jobs:
             Write-Output "$file`n"
             
             Write-Output "move"
-            Move-Item -Path $file -Destination $destination -Verbose -Whatif
+            Write-Host "Source: $file"
+            Write-Host "Target: $destination"
+            
+            if (Test-Path $file) {
+                Move-Item -Path $file -Destination $destination -Force -Verbose
+                Write-Host "Moved successfully"
+            } else {
+                Write-Host "File not found!"
+                exit 1
+            }
 
             git status
           }
