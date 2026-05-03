@@ -115,7 +115,7 @@ jobs:
             Write-Host "Source: $file"
             Write-Host "Target: $destination"
             
-            if (Test-Path -Test-Path $file) {
+            if (Test-Path -LiteralPath $file) {
                 Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
                 Write-Host "Moved successfully"
             } else {
