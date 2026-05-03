@@ -5,7 +5,7 @@ name: Upload new certificate
   pull_request:
     branches: ["master"]
     paths:
-      - "upload/*.cer"
+      - "upload/**/*.cer"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -120,7 +120,7 @@ jobs:
 
                 # Update remote refs along with associated objects
                 # https://git-scm.com/docs/git-push
-                git push origin HEAD
+                git push origin ${{ github.head_ref }}
               
                 #
                 continue
@@ -141,14 +141,14 @@ jobs:
             $strFileNameThumbprint = $cert.Thumbprint
             $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
 
-            $strTargetPath = Join-Path $strFolderBasePath $certOrg
-            $strTargetPath = Join-Path $strTargetPath $strFolderNameYear
+            $strTargetPath = Join-Path "$strFolderBasePath" "$certOrg"
+            $strTargetPath = Join-Path" $strTargetPath" "$strFolderNameYear"
             $strFilename = "$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
             
             Write-Output "`n$strTargetPath`n"
             New-Item -ItemType Directory -Path $strTargetPath -Force -Verbose
             
-            $strDestination = Join-Path $strTargetPath $strFilename
+            $strDestination = Join-Path "$strTargetPath" "$strFilename"
 
             # Write-Output "$strTargetPath/$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
             
