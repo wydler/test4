@@ -21,7 +21,7 @@ jobs:
         shell: pwsh
         run: |
 
-          $files = Get-ChildItem -Path "upload" -Filter "*.txt" | Select -ExpandProperty FullName
+          $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
 
 
           foreach ($file in $files) {
