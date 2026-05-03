@@ -8,6 +8,15 @@ name: Upload new certificate
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+
+env:
+  GH_ACTOR: ${{ github.actor }}
+  # GH_ACTOR: "dependabot[bot]"
+  
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   check:
     name: Check new certificates
@@ -20,7 +29,7 @@ jobs:
       - name: Check file name and location
         shell: pwsh
         run: |
-
+          
           $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
 
 
@@ -100,22 +109,50 @@ jobs:
             $targetPath = Join-Path $targetPath $FolderNameYear
             $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$targetPath`n"
-            New-Item -ItemType Directory -Path $targetPath
+            New-Item -ItemType Directory -Path $targetPath -Force -Verbose
             $destination = Join-Path $targetPath $filename
 
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
-            Write-Output "`n$destination`n"
-            Move-Item -Path $file -Destination $destination
-          }
+            
+            Write-Output "`nDestination"
+            Write-Output "$destination`n"
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@a284dc1814e3fd07f2e34267fc8f81227ed29fb8  # v45.0.9
-        with:
-          files: |
-            **.cer
-            **.der
-            **.pem
+            Write-Output "`nFile"
+            Write-Output "$file`n"
+            
+            Write-Output "move"
+            Write-Host "Source: $file"
+            Write-Host "Target: $destination"
+            
+            if (Test-Path -LiteralPath $file) {
+                Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
+                Write-Host "Moved successfully"
+
+                # Set global options
+                # https://git-scm.com/docs/git-config
+                # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
+                git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
+                git config --local user.name "${{ env.GH_ACTOR }}"
+
+                # Add contents of new or changed files to the index
+                # https://git-scm.com/docs/git-add
+                git add $destination
+
+                # Create a new commit containing the current contents of the index and the given log message describing the changes
+                # https://git-scm.com/docs/git-commit
+                git commit -m "Added $(Split-Path $destination -Leaf)"
+
+                # Update remote refs along with associated objects
+                # https://git-scm.com/docs/git-push
+                git push --set-upstream origin HEAD               
+
+            } else {
+                Write-Host "File not found!"
+                exit 1
+            }
+
+            git status
+          }
 
       - name: Create Pull Request
         uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
