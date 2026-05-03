@@ -143,7 +143,7 @@ jobs:
             $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
 
             $strTargetPath = Join-Path "$strFolderBasePath" "$certOrg"
-            $strTargetPath = Join-Path" $strTargetPath" "$strFolderNameYear"
+            $strTargetPath = Join-Path "$strTargetPath" "$strFolderNameYear"
             $strFilename = "$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
             
             Write-Output "`n$strTargetPath`n"
