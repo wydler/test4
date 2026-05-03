@@ -118,7 +118,7 @@ jobs:
             **.pem
 
       - name: Create Pull Request
-        uses: devops-infra/action-pull-request@v0.6.0
+        uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
         with:
           github_token: ${{ secrets.NSP_GH_TOKEN }}
           source_branch: ${{ github.ref_name }}
