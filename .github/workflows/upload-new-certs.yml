@@ -122,7 +122,7 @@ jobs:
             
             Write-Output "move"
             Write-Host "Source: $file"
-            Write-Host "Target: $destination"
+            Write-Host "Target: $GITHUB_WORKSPACE/$destination"
             
             if (Test-Path -LiteralPath $file) {
                 Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
