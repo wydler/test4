@@ -31,13 +31,45 @@ jobs:
       - name: Check file name and location
         shell: pwsh
         run: |
-          
-          $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
+
+          # Declaration and initialization of variables
+          [string] $strFolderBasePath = ""
+          [string] $strTargetPath = ""
+          [string] $strFilename = ""
+          [string] $strDestination = ""
+          [string] $strFolderNameYear = ""
+          [string] $strFileNameThumbprint = ""
+          [string] $strFileExtension = ""
+
+          [array] $characterMap = @(
+            @(' ','_'),
+            @('<','-'),
+            @('>','-'),
+            @(':','-'),
+            @('/','-'),
+            @('\\','-'),
+            @('\|','-'),
+            @('\?','-'),
+            @('\*','-'),
+            @('\.$','')
+          )
 
 
-          foreach ($file in $files) {
+          # Set global options
+          # https://git-scm.com/docs/git-config
+          # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
+          git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
+          git config --local user.name "${{ env.GH_ACTOR }}"
 
-            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($file)
+            
+          # Retrieving files in all directories that have the file types cer, der, and pem
+          # The column named Fullname is passed to the loop.            
+          Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName ForEach-Object {
+
+            #  Declaration and initialization of variables for the loop
+            [string] $strFile = $_
+
+            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($strFile)
 
             if ($cert.Issuer -match 'CN=([^,]+)') {
                 $cn = $Matches[1]
@@ -55,17 +87,23 @@ jobs:
                 $o = "Various"
             }
 
-            #####
-
+            # 
             $CertCn = (($cert.Issuer.Split(','))[0]).split('=')[1]
             $certOrg = (($cert.Issuer.Split(','))[1]).split('=')[1]
 
-            $FolderNameYear= $cert.NotBefore.Year
-            $FileNameThumbprint = $cert.Thumbprint
-            $fileExtension = [System.IO.Path]::GetExtension($file).Trim(".")
+            $characterMap | ForEach-Object {
+                $CertCn = $CertCn -replace($_[0],$_[1])
+                $certOrg = $certOrg -replace($_[0],$_[1])
+            }
 
-            #####
 
+            #
+            $strFolderNameYear = $cert.NotBefore.Year
+            $strFileNameThumbprint = $cert.Thumbprint
+            $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
+
+           
+            #
             $bc = $cert.Extensions | Where-Object { $_ -is [System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension] } | Select-Object -First 1
 
             if ($bc.CertificateAuthority) {
@@ -76,90 +114,66 @@ jobs:
                 exit 1
             }
             
-            #####
-
-            [array] $characterMap = @(
-                @(' ','_'),
-                @('<','-'),
-                @('>','-'),
-                @(':','-'),
-                @('/','-'),
-                @('\\','-'),
-                @('\|','-'),
-                @('\?','-'),
-                @('\*','-'),
-                @('\.$','')
-             )
-
-            $characterMap | ForEach-Object {
-                $CertCn = $CertCn -replace($_[0],$_[1])
-                $certOrg = $certOrg -replace($_[0],$_[1])
-            }
-
-            #####
 
             if ($cert.Issuer -eq $cert.Subject) {
                 #
-                $basePath = "roots"
+                $strFolderBasePath = "roots"
             }
             else {
                 #
-                $basePath = "intermediaries"
+                $strFolderBasePath = "intermediaries"
             }
 
-            $targetPath = Join-Path $basePath $certOrg
-            $targetPath = Join-Path $targetPath $FolderNameYear
-            $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
-            Write-Output "`n$targetPath`n"
-            New-Item -ItemType Directory -Path $targetPath -Force -Verbose
-            $destination = Join-Path $targetPath $filename
+            $strTargetPath = Join-Path $strFolderBasePath $certOrg
+            $strTargetPath = Join-Path $strTargetPath $strFolderNameYear
+            $strFilename = "$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
+            
+            Write-Output "`n$strTargetPath`n"
+            New-Item -ItemType Directory -Path $strTargetPath -Force -Verbose
+            
+            $strDestination = Join-Path $strTargetPath $strFilename
 
-            # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
+            # Write-Output "$strTargetPath/$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
             
             Write-Output "`nDestination"
-            Write-Output "$destination`n"
+            Write-Output "$strDestination`n"
 
             Write-Output "`nFile"
-            Write-Output "$file`n"
+            Write-Output "$strFile`n"
 
-            # Set global options
-            # https://git-scm.com/docs/git-config
-            # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
-            git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
-            git config --local user.name "${{ env.GH_ACTOR }}"
 
               
-            if (Test-Path -LiteralPath $destination) {
+            if (Test-Path -LiteralPath $strDestination) {
 
               Write-Output "CA Cert bereits vorhanden."
-              Remove-Item -LiteralPath "$file" -Confirm:$false
+              Remove-Item -LiteralPath "$strFile" -Confirm:$false
 
               # Add contents of new or changed files to the index
               # https://git-scm.com/docs/git-add
-              # git add $destination
-              git add $file
+              # git add $strDestination
+              git add $strFile
 
               # Create a new commit containing the current contents of the index and the given log message describing the changes
               # https://git-scm.com/docs/git-commit
-              git commit -m "Removed $(Split-Path $file -Leaf)"
+              git commit -m "Removed $(Split-Path $strFile -Leaf)"
             }
             else {
             
               Write-Output "move"
-              Write-Host "Source: $file"
-              Write-Host "Target: $destination"
+              Write-Host "Source: $strFile"
+              Write-Host "Target: $strDestination"
             
-                Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
+                Move-Item -LiteralPath $strFile -Destination $strDestination -Force -Verbose
                 Write-Host "Moved successfully"
 
                 # Add contents of new or changed files to the index
                 # https://git-scm.com/docs/git-add
-                # git add $destination
+                # git add $strDestination
                 git add -A
 
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
-                git commit -m "Added $(Split-Path $destination -Leaf)"
+                git commit -m "Added $(Split-Path $strDestination -Leaf)"
             }
 
               # Update remote refs along with associated objects
