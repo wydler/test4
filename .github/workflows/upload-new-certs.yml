@@ -1,0 +1,109 @@
+---
+name: Upload new certificate
+
+"on":
+  pull_request:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check new certificates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repo
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - name: Check file name and location
+        shell: pwsh
+        run: |
+
+          $files = Get-ChildItem -Path "upload" | Select -ExpandProperty FullName
+
+
+          foreach ($file in $files) {
+
+            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($file)
+
+            if ($cert.Issuer -match 'CN=([^,]+)') {
+                $cn = $Matches[1]
+            }
+            elseif ($cert.Issuer -match 'O=([^,]+)') {
+                $ou = $Matches[1]
+            }
+            elseif ($cert.Issuer -match 'C=([^,]+)') {
+                $c = $Matches[1]
+            }
+            elseif ($cert.Issuer -match 'DC=([^,]+)') {
+                $dc = $Matches[1]
+            }
+            else {
+                $o = "Various"
+            }
+
+            #####
+
+            $CertCn = (($cert.Issuer.Split(','))[0]).split('=')[1]
+            $certOrg = (($cert.Issuer.Split(','))[1]).split('=')[1]
+
+            $FolderNameYear= $cert.NotBefore.Year
+            $FileNameThumbprint = $cert.Thumbprint
+            $fileExtension = [System.IO.Path]::GetExtension($file).Trim(".")
+
+            #####
+
+            $bc = $cert.Extensions | Where-Object { $_ -is [System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension] } | Select-Object -First 1
+
+            if ($bc.CertificateAuthority) {
+                Write-Output "CA Certificate`n"
+            }
+            else {
+                Write-Output "Server Certificate`n"
+                exit 1
+            }
+            
+            #####
+
+            [array] $characterMap = @(
+                @(' ','_'),
+                @('<','-'),
+                @('>','-'),
+                @(':','-'),
+                @('/','-'),
+                @('\\','-'),
+                @('\|','-'),
+                @('\?','-'),
+                @('\*','-'),
+                @('\.$','')
+             )
+
+            $characterMap | ForEach-Object {
+                $CertCn = $CertCn -replace($_[0],$_[1])
+                $certOrg = $certOrg -replace($_[0],$_[1])
+            }
+
+            #####
+
+            if ($cert.Issuer -eq $cert.Subject) {
+                #
+                $basePath = "roots"
+            }
+            else {
+                #
+                $basePath = "intermediaries"
+            }
+
+            $targetPath = Join-Path $basePath $certOrg
+            $targetPath = Join-Path $targetPath $FolderNameYear
+            $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
+
+            New-Item -ItemType Directory -Path $targetPath -Force -WhatIf | Out-Null
+            $destination = Join-Path $targetPath $filename
+
+            # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
+            Write-Output "`n$destination`n"
+            #Move-Item -Path $file -Destination $destination -WhatIf
+          }
