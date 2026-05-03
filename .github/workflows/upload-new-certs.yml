@@ -70,6 +70,7 @@ jobs:
 
             #  Declaration and initialization of variables for the loop
             [string] $strFile = $_
+            write-output "$strFile"
 
             $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($strFile)
 
