@@ -122,7 +122,7 @@ jobs:
         with:
           github_token: ${{ secrets.NSP_GH_TOKEN }}
           source_branch: ${{ github.ref_name }}
-          target_branch: main
+          target_branch: master
           title: "Automated certificate upload"
           body: |
             This PR was automatically created after processing uploaded certificates.
