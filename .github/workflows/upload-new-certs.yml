@@ -63,7 +63,7 @@ jobs:
           git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
           git config --local user.name "${{ env.GH_ACTOR }}"
 
-            
+
           # Retrieving files in all directories that have the file types cer, der, and pem
           # The column named Fullname is passed to the loop.            
           Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname | ForEach-Object {
@@ -100,12 +100,6 @@ jobs:
 
 
             #
-            $strFolderNameYear = $cert.NotBefore.Year
-            $strFileNameThumbprint = $cert.Thumbprint
-            $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
-
-           
-            #
             $bc = $cert.Extensions | Where-Object { $_ -is [System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension] } | Select-Object -First 1
 
             if ($bc.CertificateAuthority) {
@@ -113,7 +107,16 @@ jobs:
             }
             else {
                 Write-Output "Server Certificate`n"
-                exit 1
+
+                Remove-Item -LiteralPath "$strFile" -Confirm:$false
+
+                # Add contents of new or changed files to the index
+                # https://git-scm.com/docs/git-add
+                git add $strFile
+
+                # Create a new commit containing the current contents of the index and the given log message describing the changes
+                # https://git-scm.com/docs/git-commit
+                git commit -m "Delete $(Split-Path $strFile -Leaf)"
             }
             
 
@@ -125,6 +128,11 @@ jobs:
                 #
                 $strFolderBasePath = "intermediaries"
             }
+
+            #
+            $strFolderNameYear = $cert.NotBefore.Year
+            $strFileNameThumbprint = $cert.Thumbprint
+            $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
 
             $strTargetPath = Join-Path $strFolderBasePath $certOrg
             $strTargetPath = Join-Path $strTargetPath $strFolderNameYear
@@ -143,7 +151,6 @@ jobs:
             Write-Output "`nFile"
             Write-Output "$strFile`n"
 
-
               
             if (Test-Path -LiteralPath $strDestination) {
 
@@ -157,7 +164,7 @@ jobs:
 
               # Create a new commit containing the current contents of the index and the given log message describing the changes
               # https://git-scm.com/docs/git-commit
-              git commit -m "Removed $(Split-Path $strFile -Leaf)"
+              git commit -m "Delete $(Split-Path $strFile -Leaf)"
             }
             else {
             
@@ -175,7 +182,7 @@ jobs:
 
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
-                git commit -m "Added $(Split-Path $strDestination -Leaf)"
+                git commit -m "Add $(Split-Path $strDestination -Leaf)"
             }
 
               # Update remote refs along with associated objects
