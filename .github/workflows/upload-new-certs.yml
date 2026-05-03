@@ -126,7 +126,7 @@ jobs:
 
               Write-Output "CA Cert bereits vorhanden."
 
-              Remove-Item -LiteralPath "file" -Confirm:$false
+              Remove-Item -LiteralPath "$file" -Confirm:$false
             }
             else {
             
