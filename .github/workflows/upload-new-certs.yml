@@ -121,12 +121,19 @@ jobs:
 
             Write-Output "`nFile"
             Write-Output "$file`n"
+
+            if (Test-Path -LiteralPath $destination) {
+
+              Write-Output "CA Cert bereits vorhanden."
+
+              Remove-Item -LiteralPath "file" -Confirm:$false
+            }
+            else {
             
-            Write-Output "move"
-            Write-Host "Source: $file"
-            Write-Host "Target: $GITHUB_WORKSPACE/$destination"
+              Write-Output "move"
+              Write-Host "Source: $file"
+              Write-Host "Target: $destination"
             
-            if (Test-Path -LiteralPath $file) {
                 Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
                 Write-Host "Moved successfully"
 
@@ -149,12 +156,7 @@ jobs:
                 # https://git-scm.com/docs/git-push
                 git push origin HEAD
 
-            } else {
-                Write-Host "File not found!"
-                exit 1
             }
-
-            git status
           }
 
 #      - name: Create Pull Request
