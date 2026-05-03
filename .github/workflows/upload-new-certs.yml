@@ -105,7 +105,7 @@ jobs:
 
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$destination`n"
-            Move-Item -Path $file -Destination $destination -Verbose
+            Move-Item -Path $file -Destination $destination -Verbose -Whatif
 
             git status
           }
