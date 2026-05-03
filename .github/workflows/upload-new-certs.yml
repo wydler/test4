@@ -109,7 +109,7 @@ jobs:
             $targetPath = Join-Path $targetPath $FolderNameYear
             $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$targetPath`n"
-            New-Item -ItemType Directory -Path $targetPath -Verbose
+            New-Item -ItemType Directory -Path $targetPath -Force -Verbose
             $destination = Join-Path $targetPath $filename
 
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
