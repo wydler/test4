@@ -144,7 +144,7 @@ jobs:
 
                 # Update remote refs along with associated objects
                 # https://git-scm.com/docs/git-push
-                git push origin HEAD:${{ github.ref_name }}
+                git push origin ${{ github.head_ref }}
 
             } else {
                 Write-Host "File not found!"
