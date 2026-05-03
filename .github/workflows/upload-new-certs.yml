@@ -154,15 +154,15 @@ jobs:
             git status
           }
 
-      - name: Create Pull Request
-        uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
-        with:
-          github_token: ${{ secrets.NSP_GH_TOKEN }}
-          source_branch: ${{ github.ref_name }}
-          target_branch: master
-          title: "Automated certificate upload"
-          body: |
-            This PR was automatically created after processing uploaded certificates.
-            
-            - Certificates were validated
-            - Files were reorganized into CA structure
+#      - name: Create Pull Request
+#        uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
+#        with:
+#          github_token: ${{ secrets.NSP_GH_TOKEN }}
+#          source_branch: ${{ github.ref_name }}
+#          target_branch: master
+#          title: "Automated certificate upload"
+#          body: |
+#            This PR was automatically created after processing uploaded certificates.
+#            
+#            - Certificates were validated
+#            - Files were reorganized into CA structure
