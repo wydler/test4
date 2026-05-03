@@ -132,7 +132,7 @@ jobs:
 
                 # Add contents of new or changed files to the index
                 # https://git-scm.com/docs/git-add
-                git add $file
+                git add $destination
 
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
