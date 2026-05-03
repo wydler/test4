@@ -20,7 +20,6 @@ jobs:
       - name: Check file name and location
         shell: pwsh
         run: |
-          cd $GITHUB_WORKSPACE
           
           $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
 
