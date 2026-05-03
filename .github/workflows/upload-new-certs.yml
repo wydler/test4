@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Get repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Check file name and location
         shell: pwsh
@@ -122,7 +124,7 @@ jobs:
             
             Write-Output "move"
             Write-Host "Source: $file"
-            Write-Host "Target: $destination"
+            Write-Host "Target: $GITHUB_WORKSPACE/$destination"
             
             if (Test-Path -LiteralPath $file) {
                 Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
@@ -136,7 +138,8 @@ jobs:
 
                 # Add contents of new or changed files to the index
                 # https://git-scm.com/docs/git-add
-                git add $destination
+                # git add $destination
+                git add -A
 
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
@@ -144,7 +147,7 @@ jobs:
 
                 # Update remote refs along with associated objects
                 # https://git-scm.com/docs/git-push
-                git push --set-upstream origin HEAD               
+                git push origin test12
 
             } else {
                 Write-Host "File not found!"
@@ -154,15 +157,15 @@ jobs:
             git status
           }
 
-      - name: Create Pull Request
-        uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
-        with:
-          github_token: ${{ secrets.NSP_GH_TOKEN }}
-          source_branch: ${{ github.ref_name }}
-          target_branch: master
-          title: "Automated certificate upload"
-          body: |
-            This PR was automatically created after processing uploaded certificates.
-            
-            - Certificates were validated
-            - Files were reorganized into CA structure
+#      - name: Create Pull Request
+#        uses: devops-infra/action-pull-request@b2895bff2ff66579f6704d717a1ea75fad919e84
+#        with:
+#          github_token: ${{ secrets.NSP_GH_TOKEN }}
+#          source_branch: ${{ github.ref_name }}
+#          target_branch: master
+#          title: "Automated certificate upload"
+#          body: |
+#            This PR was automatically created after processing uploaded certificates.
+#            
+#            - Certificates were validated
+#            - Files were reorganized into CA structure
