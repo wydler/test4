@@ -117,6 +117,9 @@ jobs:
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
                 git commit -m "Delete $(Split-Path $strFile -Leaf)"
+
+                #
+                continue
             }
             
 
