@@ -100,10 +100,10 @@ jobs:
             $targetPath = Join-Path $targetPath $FolderNameYear
             $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
 
-            New-Item -ItemType Directory -Path $targetPath -Force -WhatIf | Out-Null
+            New-Item -ItemType Directory -Path $targetPath -Force | Out-Null
             $destination = Join-Path $targetPath $filename
 
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$destination`n"
-            #Move-Item -Path $file -Destination $destination -WhatIf
+            Move-Item -Path $file -Destination $destination
           }
