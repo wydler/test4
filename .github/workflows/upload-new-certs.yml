@@ -8,6 +8,11 @@ name: Upload new certificate
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+
+env:
+  GH_ACTOR: "dependabot[bot]"
+  
+  
 jobs:
   check:
     name: Check new certificates
@@ -118,6 +123,25 @@ jobs:
             if (Test-Path -LiteralPath $file) {
                 Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
                 Write-Host "Moved successfully"
+
+                # Set global options
+                # https://git-scm.com/docs/git-config
+                # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
+                git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
+                git config --local user.name "${{ env.GH_ACTOR }}"
+
+                # Add contents of new or changed files to the index
+                # https://git-scm.com/docs/git-add
+                git add $file
+
+                # Create a new commit containing the current contents of the index and the given log message describing the changes
+                # https://git-scm.com/docs/git-commit
+                git commit -m "Added $(Split-Path $file -Leaf)"
+
+                # Update remote refs along with associated objects
+                # https://git-scm.com/docs/git-push
+                git push --set-upstream origin HEAD               
+
             } else {
                 Write-Host "File not found!"
                 exit 1
