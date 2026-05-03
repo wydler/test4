@@ -100,12 +100,12 @@ jobs:
             $targetPath = Join-Path $targetPath $FolderNameYear
             $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$targetPath`n"
-            New-Item -ItemType Directory -Path $targetPath
+            New-Item -ItemType Directory -Path $targetPath Verbose
             $destination = Join-Path $targetPath $filename
 
             # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
             Write-Output "`n$destination`n"
-            Move-Item -Path $file -Destination $destination
+            Move-Item -Path $file -Destination $destination -Verbose
 
             git status
           }
