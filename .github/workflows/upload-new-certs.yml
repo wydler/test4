@@ -118,6 +118,10 @@ jobs:
                 # https://git-scm.com/docs/git-commit
                 git commit -m "Delete $(Split-Path $strFile -Leaf)"
 
+                # Update remote refs along with associated objects
+                # https://git-scm.com/docs/git-push
+                git push origin HEAD
+              
                 #
                 continue
             }
