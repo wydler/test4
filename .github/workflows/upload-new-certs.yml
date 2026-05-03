@@ -12,7 +12,10 @@ name: Upload new certificate
 env:
   GH_ACTOR: "dependabot[bot]"
   
-  
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   check:
     name: Check new certificates
