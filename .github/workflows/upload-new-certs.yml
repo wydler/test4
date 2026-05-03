@@ -10,7 +10,8 @@ name: Upload new certificate
 
 
 env:
-  GH_ACTOR: "dependabot[bot]"
+  GH_ACTOR: ${{ github.actor }}
+  # GH_ACTOR: "dependabot[bot]"
   
 permissions:
   contents: write
