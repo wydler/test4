@@ -14,7 +14,8 @@ name: Upload new certificate
 env:
   GH_ACTOR: ${{ github.actor }}
   # GH_ACTOR: "dependabot[bot]"
-  
+  BRANCH: ${{ github.head_ref || github.ref_name }}
+
 permissions:
   contents: write
   pull-requests: write
@@ -28,7 +29,7 @@ jobs:
       - name: Get repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ env.BRANCH }}
 
       - name: Check file name and location
         shell: pwsh
@@ -124,7 +125,7 @@ jobs:
 
                 # Update remote refs along with associated objects
                 # https://git-scm.com/docs/git-push
-                git push origin ${{ github.head_ref }}
+                git push origin ${{ env.BRANCH }}
               
                 #
                 continue
@@ -197,7 +198,7 @@ jobs:
 
               # Update remote refs along with associated objects
               # https://git-scm.com/docs/git-push
-              git push origin ${{ github.head_ref }}
+              git push origin ${{ env.BRANCH }}
           }
 
 #      - name: Create Pull Request
