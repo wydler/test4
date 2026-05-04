@@ -4,6 +4,8 @@ name: Upload new certificate
 "on":
   pull_request:
     branches: ["master"]
+    paths:
+      - "upload/**/*.cer"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -12,7 +14,8 @@ name: Upload new certificate
 env:
   GH_ACTOR: ${{ github.actor }}
   # GH_ACTOR: "dependabot[bot]"
-  
+  BRANCH: ${{ github.head_ref || github.ref_name }}
+
 permissions:
   contents: write
   pull-requests: write
@@ -26,18 +29,54 @@ jobs:
       - name: Get repo
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ env.BRANCH }}
 
       - name: Check file name and location
         shell: pwsh
         run: |
-          
-          $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty FullName
+
+          # Declaration and initialization of variables
+          [string] $strFolderBasePath = ""
+          [string] $strTargetPath = ""
+          [string] $strFilename = ""
+          [string] $strDestination = ""
+          [string] $strFolderNameYear = ""
+          [string] $strFileNameThumbprint = ""
+          [string] $strFileExtension = ""
+
+          [array] $characterMap = @(
+            @(' ','_'),
+            @('<','-'),
+            @('>','-'),
+            @(':','-'),
+            @('/','-'),
+            @('\\','-'),
+            @('\|','-'),
+            @('\?','-'),
+            @('\*','-'),
+            @('\.$','')
+          )
 
 
-          foreach ($file in $files) {
+          # Set global options
+          # https://git-scm.com/docs/git-config
+          # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
+          git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
+          git config --local user.name "${{ env.GH_ACTOR }}"
 
-            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($file)
+
+          # Retrieving files in all directories that have the file types cer, der, and pem
+          # The column named Fullname is passed to the loop.            
+          # Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname | ForEach-Object {
+          $files = Get-ChildItem -Path "upload" -Filter "*.cer" | Select -ExpandProperty Fullname
+
+          foreach ($strFile in $files) {
+
+            # Declaration and initialization of variables for the loop
+            # [string] $strFile = $_
+            write-output "$strFile"
+
+            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($strFile)
 
             if ($cert.Issuer -match 'CN=([^,]+)') {
                 $cn = $Matches[1]
@@ -55,17 +94,17 @@ jobs:
                 $o = "Various"
             }
 
-            #####
-
+            # 
             $CertCn = (($cert.Issuer.Split(','))[0]).split('=')[1]
             $certOrg = (($cert.Issuer.Split(','))[1]).split('=')[1]
 
-            $FolderNameYear= $cert.NotBefore.Year
-            $FileNameThumbprint = $cert.Thumbprint
-            $fileExtension = [System.IO.Path]::GetExtension($file).Trim(".")
+            $characterMap | ForEach-Object {
+                $CertCn = $CertCn -replace($_[0],$_[1])
+                $certOrg = $certOrg -replace($_[0],$_[1])
+            }
 
-            #####
 
+            #
             $bc = $cert.Extensions | Where-Object { $_ -is [System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension] } | Select-Object -First 1
 
             if ($bc.CertificateAuthority) {
@@ -73,88 +112,93 @@ jobs:
             }
             else {
                 Write-Output "Server Certificate`n"
-                exit 1
-            }
-            
-            #####
 
-            [array] $characterMap = @(
-                @(' ','_'),
-                @('<','-'),
-                @('>','-'),
-                @(':','-'),
-                @('/','-'),
-                @('\\','-'),
-                @('\|','-'),
-                @('\?','-'),
-                @('\*','-'),
-                @('\.$','')
-             )
-
-            $characterMap | ForEach-Object {
-                $CertCn = $CertCn -replace($_[0],$_[1])
-                $certOrg = $certOrg -replace($_[0],$_[1])
-            }
-
-            #####
-
-            if ($cert.Issuer -eq $cert.Subject) {
-                #
-                $basePath = "roots"
-            }
-            else {
-                #
-                $basePath = "intermediaries"
-            }
-
-            $targetPath = Join-Path $basePath $certOrg
-            $targetPath = Join-Path $targetPath $FolderNameYear
-            $filename = "$($CertCn)_$($FileNameThumbprint).$fileExtension"
-            Write-Output "`n$targetPath`n"
-            New-Item -ItemType Directory -Path $targetPath -Force -Verbose
-            $destination = Join-Path $targetPath $filename
-
-            # Write-Output "$targetPath/$($CertCn)_$($FileNameThumbprint).$fileExtension"
-            
-            Write-Output "`nDestination"
-            Write-Output "$destination`n"
-
-            Write-Output "`nFile"
-            Write-Output "$file`n"
-            
-            Write-Output "move"
-            Write-Host "Source: $file"
-            Write-Host "Target: $GITHUB_WORKSPACE/$destination"
-            
-            if (Test-Path -LiteralPath $file) {
-                Move-Item -LiteralPath $file -Destination $destination -Force -Verbose
-                Write-Host "Moved successfully"
-
-                # Set global options
-                # https://git-scm.com/docs/git-config
-                # https://medium.com/@shahbishwa21/automate-daily-commits-with-random-content-using-github-actions-804736759c1d
-                git config --local user.email "${{ env.GH_ACTOR }}@users.noreply.github.com"
-                git config --local user.name "${{ env.GH_ACTOR }}"
+                Remove-Item -LiteralPath "$strFile" -Confirm:$false
 
                 # Add contents of new or changed files to the index
                 # https://git-scm.com/docs/git-add
-                # git add $destination
                 git add -A
 
                 # Create a new commit containing the current contents of the index and the given log message describing the changes
                 # https://git-scm.com/docs/git-commit
-                git commit -m "Added $(Split-Path $destination -Leaf)"
+                git commit -m "Delete $(Split-Path $strFile -Leaf)"
 
                 # Update remote refs along with associated objects
                 # https://git-scm.com/docs/git-push
-                git push origin HEAD
+                git push origin ${{ env.BRANCH }}
+              
+                #
+                continue
+            }
+            
 
-            } else {
-                Write-Host "File not found!"
-                exit 1
+            if ($cert.Issuer -eq $cert.Subject) {
+                #
+                $strFolderBasePath = "roots"
+            }
+            else {
+                #
+                $strFolderBasePath = "intermediaries"
             }
 
-            git status
+            #
+            $strFolderNameYear = $cert.NotBefore.Year
+            $strFileNameThumbprint = $cert.Thumbprint
+            $strFileExtension = [System.IO.Path]::GetExtension($strFile).Trim(".")
+
+            $strTargetPath = Join-Path "$strFolderBasePath" "$certOrg"
+            $strTargetPath = Join-Path "$strTargetPath" "$strFolderNameYear"
+            $strFilename = "$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
+            
+            Write-Output "`n$strTargetPath`n"
+            New-Item -ItemType Directory -Path $strTargetPath -Force -Verbose
+            
+            $strDestination = Join-Path "$strTargetPath" "$strFilename"
+
+            # Write-Output "$strTargetPath/$($CertCn)_$($strFileNameThumbprint).$strFileExtension"
+            
+            Write-Output "`nDestination"
+            Write-Output "$strDestination`n"
+
+            Write-Output "`nFile"
+            Write-Output "$strFile`n"
+
+              
+            if (Test-Path -LiteralPath $strDestination) {
+
+              Write-Output "CA Cert bereits vorhanden."
+              Remove-Item -LiteralPath "$strFile" -Confirm:$false
+
+              # Add contents of new or changed files to the index
+              # https://git-scm.com/docs/git-add
+              git add -A
+
+              # Create a new commit containing the current contents of the index and the given log message describing the changes
+              # https://git-scm.com/docs/git-commit
+              git commit -m "Delete $(Split-Path $strFile -Leaf)"
+            }
+            else {
+            
+              Write-Output "move"
+              Write-Host "Source: $strFile"
+              Write-Host "Target: $strDestination"
+            
+                Move-Item -LiteralPath $strFile -Destination $strDestination -Force -Verbose
+                Write-Host "Moved successfully"
+
+                # Add contents of new or changed files to the index
+                # https://git-scm.com/docs/git-add
+                # git add $strDestination
+                git add -A
+
+                # Create a new commit containing the current contents of the index and the given log message describing the changes
+                # https://git-scm.com/docs/git-commit
+                git commit -m "Add $(Split-Path $strDestination -Leaf)"
+            }
+
+              # Update remote refs along with associated objects
+              # https://git-scm.com/docs/git-push
+              git push origin ${{ env.BRANCH }}
           }
 
 #      - name: Create Pull Request
